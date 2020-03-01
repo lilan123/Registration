@@ -8,7 +8,7 @@ namespace Registration.Domain.AggregatesModel.StudentAggregate
 {
     public class StudentEntity
     {
-
+        [Key]
         public string EmailAddress { get; set; }
 
     }

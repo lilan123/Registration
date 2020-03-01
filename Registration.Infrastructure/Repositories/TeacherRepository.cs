@@ -25,7 +25,7 @@ namespace Registration.Infrastructure.Repositories
 
         public IEnumerable<TeacherEntity> FindStudentByNotification(string TeacherEmail, string[] StudentEmails, string Message)
         {
-            return _dbContext.Teachers.Include(o => o.StudentEmailAddress).Where(o => o.TeacherEmailAddress == TeacherEmail && StudentEmails.Contains(o.StudentEmailAddress) && o.Notification.Contains(Message));
+            return _dbContext.Teachers.Include(o => o.StudentEmailAddress).Where(o => o.TeacherEmailAddress == TeacherEmail && StudentEmails.Contains(o.StudentEmailAddress) && o.Notification.Contains(Message)).Distinct(); 
         }
 
         public IEnumerable<TeacherEntity> FindStudentByTeacherEmail(string teacherEmail)

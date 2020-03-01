@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F334B01C-EB29-4B21-A824-75285289C2EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Application", "Registration.Application\Registration.Application.csproj", "{EB4E3802-331C-4ACA-9315-54827D0F58A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Registration.Application", "Registration.Application\Registration.Application.csproj", "{EB4E3802-331C-4ACA-9315-54827D0F58A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Domain", "Registration.Domain\Registration.Domain.csproj", "{57236146-1449-4FB4-A64C-98CC054FC8AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Registration.Domain", "Registration.Domain\Registration.Domain.csproj", "{57236146-1449-4FB4-A64C-98CC054FC8AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Infrastructure", "Registration.Infrastructure\Registration.Infrastructure.csproj", "{AD09D654-90C0-4D6D-B585-7273F12A734E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Registration.Infrastructure", "Registration.Infrastructure\Registration.Infrastructure.csproj", "{AD09D654-90C0-4D6D-B585-7273F12A734E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

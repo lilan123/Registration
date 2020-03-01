@@ -11,7 +11,7 @@ namespace Registration.Domain.AggregatesModel.TeacherAggregate
 
         Task UpdateStudentSuspend(string student);
 
-        IEnumerable<TeacherEntity> FindStudentByNotification(string TeacherEmail, string StudentEmail, string Message);
+        IEnumerable<TeacherEntity> FindStudentByNotification(string TeacherEmail, string[] StudentEmails, string Message);
 
         IEnumerable<TeacherEntity> FindStudentByTeacherEmail(string Email);
     }

@@ -7,6 +7,6 @@ namespace Registration.Application.Models
 {
     public class StudentModel
     {
-        public string StudentEmailAddress; 
+        public string Student { get; set; }
     }
 }

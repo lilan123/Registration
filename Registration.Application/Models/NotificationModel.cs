@@ -10,4 +10,10 @@ namespace Registration.Application.Models
         public string Teacher { get; set; }
         public string Notification { get; set; }
     }
+
+    public class Recipients
+    {
+        public List<string> recipients { get; set; }
+
+    }
 }

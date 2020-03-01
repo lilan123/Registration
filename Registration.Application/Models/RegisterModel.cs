@@ -10,6 +10,6 @@ namespace Registration.Application.Models
     {
         public string Teacher { get; set; }
 
-        public List<StudentEntity> Students { get; set; }
+        public string[] Students { get; set; }
     }
 }

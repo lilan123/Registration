@@ -25,17 +25,22 @@ namespace Registration.Infrastructure.Repositories
 
         public IEnumerable<TeacherEntity> FindStudentByNotification(string TeacherEmail, string[] StudentEmails, string Message)
         {
-            return _dbContext.Teachers.Include(o => o.StudentEmailAddress).Where(o => o.TeacherEmailAddress == TeacherEmail && StudentEmails.Contains(o.StudentEmailAddress) && o.Notification.Contains(Message)).Distinct(); 
+            return _dbContext.Teachers.Where(o => o.TeacherEmailAddress == TeacherEmail || StudentEmails.Contains(o.StudentEmailAddress) && o.Notification.Contains(Message) && o.IsSuspend.Equals(false)).Distinct(); 
+        }
+
+        public IEnumerable<TeacherEntity> FindStudentByNotification(string TeacherEmail, string Message)
+        {
+            return _dbContext.Teachers.Where(o => o.TeacherEmailAddress == TeacherEmail && o.Notification.Contains(Message) && o.IsSuspend.Equals(false)).Distinct();
         }
 
         public IEnumerable<TeacherEntity> FindStudentByTeacherEmail(string teacherEmail)
         {
-            return _dbContext.Teachers.Include(o => o.TeacherEmailAddress).Where(o => o.TeacherEmailAddress == teacherEmail);
+            return _dbContext.Teachers.Where(o => o.TeacherEmailAddress == teacherEmail);
         }
 
         public async Task UpdateStudentSuspend(string student)
         {
-            IEnumerable<TeacherEntity> teacherEntities= _dbContext.Teachers.Include(o => o.StudentEmailAddress).Where(o => o.StudentEmailAddress == student);
+            IEnumerable<TeacherEntity> teacherEntities= _dbContext.Teachers.Where(o => o.StudentEmailAddress == student);
             foreach (var stu in teacherEntities)
             {
                 stu.IsSuspend = true;
@@ -43,7 +48,7 @@ namespace Registration.Infrastructure.Repositories
                 _dbContext.Attach(stu);
             }
 
-            _dbContext.Entry(teacherEntities).Property("IsSuspend").IsModified = true;
+            //_dbContext.Entry(teacherEntities).Property("IsSuspend").IsModified = true;
             await _dbContext.SaveChangesAsync();
 
         }

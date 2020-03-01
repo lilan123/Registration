@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +37,7 @@ namespace Registration.Application.Controllers
                 {
                     TeacherEntity teacherEntity = new TeacherEntity();
                     teacherEntity.TeacherEmailAddress = registerModel.Teacher;
-                    teacherEntity.StudentEmailAddress = student.EmailAddress;
+                    teacherEntity.StudentEmailAddress = student;
 
                     await _teacherRepository.AddTeacher(teacherEntity);
 
@@ -59,7 +60,7 @@ namespace Registration.Application.Controllers
 
             try
             {
-                var students =  _teacherRepository.FindStudentByTeacherEmail(teacher);
+                var students =  _teacherRepository.FindStudentByTeacherEmail(teacher).Select(o => o.StudentEmailAddress);
                 return Ok(students);
                  
             }
@@ -74,12 +75,12 @@ namespace Registration.Application.Controllers
         [HttpPost("suspend")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> PostSuspendAsync(string studentEmail)
+        public async Task<ActionResult> PostSuspendAsync([FromBody]StudentModel student)
         {
 
             try
             {
-                await _teacherRepository.UpdateStudentSuspend(studentEmail);
+                await _teacherRepository.UpdateStudentSuspend(student.Student);
                 return Ok();
 
             }
@@ -99,14 +100,30 @@ namespace Registration.Application.Controllers
 
             try
             {
-                string str = notificationModel.Notification.Substring(notificationModel.Notification.IndexOf("@"), notificationModel.Notification.Length - notificationModel.Notification.IndexOf("@"));
-                string message = notificationModel.Notification.Substring(0, notificationModel.Notification.IndexOf("@"));
-                string[] splitEmail = str.Split(' ', '@');
 
-                IEnumerable<TeacherEntity> teacherEntities =  _teacherRepository.FindStudentByNotification(notificationModel.Teacher, splitEmail, message);
+                if (notificationModel.Notification.IndexOf("@")> 0)
+                {
+                    string str = new string(' ', 1) + notificationModel.Notification.Substring(notificationModel.Notification.IndexOf("@"), notificationModel.Notification.Length - notificationModel.Notification.IndexOf("@")).Insert(0, string.Empty);
+                    string message = notificationModel.Notification.Substring(0, notificationModel.Notification.IndexOf("@"));
+                    string[] Emails = str.Split(new string[] { " @" }, StringSplitOptions.None);
+                    Emails = Emails.Skip(1).ToArray();
 
+                    var students = _teacherRepository.FindStudentByNotification(notificationModel.Teacher, Emails, message).Select(a => a.StudentEmailAddress).ToList();
+                    Recipients recipients = new Recipients();
 
-                return Ok(teacherEntities);
+                    recipients.recipients = students;
+                    return Ok(recipients);
+                }
+                else
+                {
+                    var students = _teacherRepository.FindStudentByNotification(notificationModel.Teacher, notificationModel.Notification).Select(a => a.StudentEmailAddress).ToList();
+                    Recipients recipients = new Recipients();
+
+                    recipients.recipients = students.Distinct().ToList();
+
+                    return Ok(recipients);
+                }
+
 
             }
             catch (Exception ex)
